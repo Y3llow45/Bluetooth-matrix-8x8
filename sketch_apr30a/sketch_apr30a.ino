@@ -3,6 +3,7 @@
 SoftwareSerial bluetooth(0, 1);
 int rows[] = {13, 12, 11, 10, 9, 8, 7, 6};
 int columns[] = {A5, A4, A3, A2, A1, 3, 4, 5};
+String message = "";
 
 byte characters[][5] = {
 {B00000000, B00000000, B00000000, B00000000, B00000000}, // space
@@ -117,14 +118,24 @@ void setup() {
 void loop() {
   if (bluetooth.available()) {
     char c = bluetooth.read();
-    String message = c;
+    if(String(c) == "~"){
+      displayText(message);
+    }else{
+      message += String(c);
+    }
     Serial.write(c);
   }
-  for (int i = 0; i < message.length(); i++) {
-    char character = message.charAt(i);
-    displayChar(characters[character - 'A']);
-    delay(100);
-  }
+}
+
+void displayText(String message) {
+  Serial.print("START DISPLAY TEXT:   ");
+  Serial.print(message.substring(0, message.length() - 1));
+  message = "";
+  //for (int i = 0; i < message.length(); i++) {
+    //char character = message.charAt(i);
+    //displayChar(characters[character - 'A']);
+    //delay(100);
+  //}  
 }
 
 void displayChar(byte data[]) {
