@@ -1,6 +1,6 @@
 #include <SoftwareSerial.h>
 
-SoftwareSerial bluetooth(2, 3);
+SoftwareSerial bluetooth(0, 1);
 
 void setup() {
   Serial.begin(9600);
