@@ -120,6 +120,7 @@ void loop() {
     char c = bluetooth.read();
     if(String(c) == "~"){
       displayText(message);
+      message = "";
     }else{
       message += String(c);
     }
@@ -128,9 +129,9 @@ void loop() {
 }
 
 void displayText(String message) {
-  Serial.print("START DISPLAY TEXT:   ");
-  Serial.print(message.substring(0, message.length() - 1));
-  message = "";
+  Serial.print("MSG:   ");
+  Serial.print(message);
+  Serial.print(" | ");
   //for (int i = 0; i < message.length(); i++) {
     //char character = message.charAt(i);
     //displayChar(characters[character - 'A']);
