@@ -1,9 +1,15 @@
 #include <SoftwareSerial.h>
 
 SoftwareSerial bluetooth(0, 1);
-int rows[] = {13, 12, 11, 10, 9, 8, 7, 6};
-int columns[] = {A5, A4, A3, A2, A1, 3, 4, 5};
+int rows[] = {13, 12, 11, 10, 9, 8, 7, 6};     //LOW
+int columns[] = {A5, A4, A3, A2, A1, 3, 4, 5}; //HIGH
 String message = "";
+
+struct Character {
+  byte data[5];
+};
+
+
 
 byte characters[][5] = {
 {B00000000, B00000000, B00000000, B00000000, B00000000}, // space
@@ -123,20 +129,19 @@ void loop() {
       message = "";
     }else{
       message += String(c);
+      //Serial.write(c);
     }
-    Serial.write(c);
   }
 }
 
 void displayText(String message) {
-  Serial.print("MSG:   ");
   Serial.print(message);
-  Serial.print(" | ");
-  //for (int i = 0; i < message.length(); i++) {
-    //char character = message.charAt(i);
+  for (int i = 0; i < message.length(); i++) {
+    char character = message.charAt(i);
+    Serial.print(character);
     //displayChar(characters[character - 'A']);
-    //delay(100);
-  //}  
+    delay(100);
+  }  
 }
 
 void displayChar(byte data[]) {
