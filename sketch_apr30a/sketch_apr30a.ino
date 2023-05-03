@@ -135,43 +135,38 @@ void loop() {
 }
 
 void displayText(String message) {
-  //Serial.print(message);
+  Serial.print(message);
   for (int i = 0; i < message.length(); i++) {
     char character = message.charAt(i);
     //Serial.print(character);
     //displayChar(characters[character - 'A']);
-    const char** bitmap = getBitmap('A', characters, arrSize);
-    if (bitmap != NULL) {
-      for (int i = 0; i < 5; i++) {
-        Serial.write(bitmap[i]);
-      }
-
+    //const char index = getIndex('A', characters, arrSize);
+    const char index = getIndex(characters, arrSize, "A");
+    if (index != NULL) {
+        Serial.write(index);
     }
     delay(100);
   }  
 }
 
 void displayChar(byte data[]) {
-  for (int i = 0; i < 7; i++) {
-    digitalWrite(rows[i], bitRead(data[i], 7 - i));
-  }
-  // delayMicroseconds(500);
-  delay(1);
-  for (int i = 0; i < 8; i++) {
-    digitalWrite(columns[i], LOW);
-  }
-  // delayMicroseconds(500);
-  delay(1);
-  for (int i = 0; i < 8; i++) {
-    digitalWrite(columns[i], HIGH);
-  }
+  
 }
 
-const char** getBitmap(const char target, Character* characters, const int numCharacters) {
-  for (int i = 0; i < numCharacters; i++) {
-    if (characters[i].letter == target) {
-      return characters[i].bitmap;
+const char* getIndex(const Character* arr, int arrSize, const char* str) {
+    for (int i = 0; i < arrSize - 1; i++) {
+        if (arr[i].letter == str) {
+            return i;
+        }
     }
-  }
-  return NULL;
+    return NULL;
 }
+
+//const char getIndex(const Character* arr, int arrSize, const char* str) {
+//    for (int i = 0; i < arrSize; i++) {
+//        if (strcmp(arr[i].letter, str) == 0) {
+//            return i;
+//        }
+//    }
+//    return -1;
+//}
