@@ -106,6 +106,7 @@ Character characters[] = {
     {'|', {'B01111111', 'B00000000', 'B00000000', 'B00000000', 'B00000000'}},
     {'}', {'B01000001', 'B00110110', 'B00001000', 'B00000000', 'B00000000'}},
 };
+int arrSize = sizeof(characters) / sizeof(Character);
 
 void setup() {
   for (byte i = 3; i <= 13; i++)
@@ -138,9 +139,12 @@ void displayText(String message) {
     char character = message.charAt(i);
     //Serial.print(character);
     //displayChar(characters[character - 'A']);
-    char** bitmap = getBitmapForLetter(character);
-    for (int i = 0; i < 5; i++) {
-        Serial.println(bitmap[i]);
+    const char** bitmap = getBitmap('A', characters, arrSize);
+    if (bitmap != NULL) {
+      for (int i = 0; i < 5; i++) {
+        Serial.write(bitmap[i]);
+      }
+
     }
     delay(100);
   }  
@@ -162,8 +166,11 @@ void displayChar(byte data[]) {
   }
 }
 
-const char** getBitmapForLetter(char letter) {
-    for (int i = 0; i < sizeof(characters) / sizeof(Character); i++) {
-        return characters[i].bitmap;
+const char** getBitmap(const char target, Character* characters, const int numCharacters) {
+  for (int i = 0; i < numCharacters; i++) {
+    if (characters[i].letter == target) {
+      return characters[i].bitmap;
     }
+  }
+  return NULL;
 }
