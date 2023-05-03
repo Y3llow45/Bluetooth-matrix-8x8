@@ -6,7 +6,8 @@ int columns[] = {A5, A4, A3, A2, A1, 3, 4, 5}; //HIGH
 String message = "";
 
 struct Character {
-  byte data[5];
+  char letter;
+  const char* bitmap[5];
 };
 
 Character characters[] = {
@@ -104,7 +105,7 @@ Character characters[] = {
     {'{', {'B00001000', 'B00110110', 'B01000001', 'B00000000', 'B00000000'}},
     {'|', {'B01111111', 'B00000000', 'B00000000', 'B00000000', 'B00000000'}},
     {'}', {'B01000001', 'B00110110', 'B00001000', 'B00000000', 'B00000000'}},
-}
+};
 
 void setup() {
   for (byte i = 3; i <= 13; i++)
@@ -132,11 +133,15 @@ void loop() {
 }
 
 void displayText(String message) {
-  Serial.print(message);
+  //Serial.print(message);
   for (int i = 0; i < message.length(); i++) {
     char character = message.charAt(i);
-    Serial.print(character);
+    //Serial.print(character);
     //displayChar(characters[character - 'A']);
+    char** bitmap = getBitmapForLetter(character);
+    for (int i = 0; i < 5; i++) {
+        Serial.println(bitmap[i]);
+    }
     delay(100);
   }  
 }
@@ -155,4 +160,10 @@ void displayChar(byte data[]) {
   for (int i = 0; i < 8; i++) {
     digitalWrite(columns[i], HIGH);
   }
+}
+
+const char** getBitmapForLetter(char letter) {
+    for (int i = 0; i < sizeof(characters) / sizeof(Character); i++) {
+        return characters[i].bitmap;
+    }
 }
